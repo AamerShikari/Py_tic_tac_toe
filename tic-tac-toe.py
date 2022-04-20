@@ -1,4 +1,6 @@
 import re
+
+pattern = re.compile("^([A-C][1-3]+)+$")
 board = {
     "A1": " ", 
     "A2": " ", 
@@ -10,8 +12,9 @@ board = {
     "C2": " ", 
     "C3": " "
 }
+fresh_board = board.copy()
 
-def printBoard(table):
+def print_board(table):
     print( "     A   B   C")
     print(f"1)   {table['A1']} | {table['B1']} | {table['C1']} ")
     print( "    -----------")
@@ -19,7 +22,7 @@ def printBoard(table):
     print( "    -----------")
     print(f"3)   {table['A3']} | {table['B3']} | {table['C3']} ")
 
-def gameOver(table, char):
+def game_over(table, char):
     if table["A1"] == char and table["A2"] == char and table["A3"] == char: #Horizontal 1
         return True
     elif table["B1"] == char and table["B2"] == char and table["B3"] == char: #Horizontal 2 
@@ -45,17 +48,34 @@ def tie(table):
             return False
     return True
 
+def play_again():
+    while True:
+        response = input("\n Play Again? (Y/N): ")
+        if response.strip() == "Y":
+            startGame()
+            return False
+        elif response.strip() == "N":
+            print("Alright, see ya later!")
+            return True
+        else:
+            print("Invalid Input! Try Again!")
+    return False
 
-pattern = re.compile("^([A-C][1-3]+)+$")
-print("-----------------------")
-print("Let's play Tic-Tac_Toe!")
-print("-----------------------")
 
-print( "\nHere is the setup: ")
-printBoard(board)
-print("\n If you ever want to quit just enter q!")
+def startGame():
+    p1 = True
+    print("-----------------------")
+    print("Let's play Tic-Tac_Toe!")
+    print("-----------------------")
+    print( "\nHere is the setup: ")
+    print_board(fresh_board)
+    print("\nIf you ever want to quit just enter q!")
+
 
 p1 = True
+startGame()
+
+
 while True: 
     if p1:
         response = input("Player X's Move (example B2): ")
@@ -77,15 +97,23 @@ while True:
 
     board[response] = "X" if p1 else "O"
 
-    printBoard(board)
-    if gameOver(board, "X" if p1 else "O"):
+    print_board(board)
+    if game_over(board, "X" if p1 else "O"):
         if p1: 
             print("CONGRATS PLAYER X! YOU WON!")
         else:
             print("CONGRATS PLAYER O! YOU WON!")
-        break
+
+        if play_again():
+            break
+        board = fresh_board
+
     if tie(board): 
         print("woah WoAh WOAH, YOU TWO TIED!")
+
+        if play_again():
+            break
+        board = fresh_board
 
     p1 = False if p1 else True    
 
