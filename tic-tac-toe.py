@@ -18,6 +18,8 @@ def printBoard(table):
     print( "    -----------")
     print(f"3)   {table['C1']} | {table['C2']} | {table['C3']} ")
 
+
+
 print("-----------------------")
 print("Let's play Tic-Tac_Toe!")
 print("-----------------------")
